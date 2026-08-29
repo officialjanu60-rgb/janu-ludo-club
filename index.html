@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="hi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Janu Ludo Club</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f4f4f4;text-align:center;color:#222}
+h1{margin:14px 0 4px;font-size:25px}.sub{margin:0 0 12px;color:#666}
+#board{width:min(94vw,520px);aspect-ratio:1;margin:auto;display:grid;grid-template-columns:repeat(15,1fr);grid-template-rows:repeat(15,1fr);background:#fff;border:3px solid #222}
+.cell{border:1px solid #aaa;background:#fff}.red{background:#ef5350}.green{background:#66bb6a}.yellow{background:#ffca28}.blue{background:#42a5f5}
+.home{display:flex;align-items:center;justify-content:center;font-size:18px}.path{background:#fff}.safe{background:#eee}
+.controls{margin:14px auto;width:min(94vw,520px);background:#fff;padding:14px;border-radius:14px;box-shadow:0 2px 8px #bbb}
+button{border:0;border-radius:10px;padding:12px 18px;font-size:16px;font-weight:bold;background:#333;color:#fff;margin:4px}
+#dice{font-size:32px;font-weight:bold;margin:5px}.turn{font-size:18px;margin:5px}.note{font-size:13px;color:#777;margin-top:8px}
+</style>
+</head>
+<body>
+<h1>🎲 Janu Ludo Club</h1>
+<p class="sub">Telegram Mini App — Demo Board</p>
+<div id="board"></div>
+<div class="controls">
+  <div class="turn" id="turn">Turn: 🔴 Red</div>
+  <div id="dice">🎲 —</div>
+  <button onclick="roll()">ROLL DICE</button>
+  <button onclick="resetGame()">RESET</button>
+  <div class="note">यह शुरुआती demo है। इसमें local dice/turn system है; online multiplayer और room system अगला चरण है।</div>
+</div>
+<script>
+const board=document.getElementById('board');
+const homes=[
+  {c:'red',name:'🔴 Red',r:0,col:0},{c:'green',name:'🟢 Green',r:0,col:10},
+  {c:'yellow',name:'🟡 Yellow',r:10,col:10},{c:'blue',name:'🔵 Blue',r:10,col:0}
+];
+for(let r=0;r<15;r++)for(let c=0;c<15;c++){
+  const d=document.createElement('div');d.className='cell';
+  for(const h of homes) if(r>=h.r&&r<h.r+5&&c>=h.col&&c<h.col+5){d.classList.add('home',h.c)}
+  // central cross/path styling
+  if((r>=5&&r<=9)||(c>=5&&c<=9)) d.classList.add('path');
+  if((r===7&&c===7)) d.textContent='★';
+  board.appendChild(d);
+}
+let players=['🔴 Red','🟢 Green','🟡 Yellow','🔵 Blue'],i=0;
+function roll(){let n=Math.floor(Math.random()*6)+1;document.getElementById('dice').textContent='🎲 '+n;
+ if(n!==6)i=(i+1)%4;document.getElementById('turn').textContent='Turn: '+players[i]}
+function resetGame(){i=0;document.getElementById('dice').textContent='🎲 —';document.getElementById('turn').textContent='Turn: 🔴 Red'}
+</script>
+</body></html>
